@@ -153,7 +153,6 @@ export default function CreateListing() {
       setLoading(false);
     }
   };
-
   return (
     <main className="p-3 max-w-4xl mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">
@@ -183,14 +182,14 @@ export default function CreateListing() {
           />
           <input
             type="text"
-            placeholder="address"
+            placeholder="Address"
             className="border p-3 rounded-lg"
             id="address"
             required
             onChange={handleChange}
             value={formData.address}
           />
-          <div className=" flex gap-6 flex-wrap">
+          <div className="flex gap-6 flex-wrap">
             <div className="flex gap-2">
               <input
                 type="checkbox"
@@ -250,7 +249,7 @@ export default function CreateListing() {
                 min="1"
                 max="10"
                 required
-                className="p-3 border border-gray-300 rounded-lg w-16"
+                className="p-3 border border-gray-300 rounded-lg"
                 onChange={handleChange}
                 value={formData.bedrooms}
               />
@@ -263,48 +262,51 @@ export default function CreateListing() {
                 min="1"
                 max="10"
                 required
-                className="p-3 border border-gray-300 rounded-lg w-16"
+                className="p-3 border border-gray-300 rounded-lg"
                 onChange={handleChange}
                 value={formData.bathrooms}
               />
               <p>Baths</p>
             </div>
-            <div className="flex flex-row gap-4">
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                id="regularPrice"
+                min="50"
+                max="10000000"
+                required
+                className="p-3 border border-gray-300 rounded-lg"
+                onChange={handleChange}
+                value={formData.regularPrice}
+              />
+              <div className="flex flex-col items-center">
+                <p>Regular price</p>
+                {formData.type === "rent" && (
+                  <span className="text-xs">($ / month)</span>
+                )}
+              </div>
+            </div>
+            {formData.offer && (
               <div className="flex items-center gap-2">
                 <input
                   type="number"
-                  id="regularPrice"
-                  min="50"
+                  id="discountPrice"
+                  min="0"
                   max="10000000"
                   required
-                  className="p-3 border border-gray-300 rounded-lg w-28"
+                  className="p-3 border border-gray-300 rounded-lg"
                   onChange={handleChange}
-                  value={formData.regularPrice}
+                  value={formData.discountPrice}
                 />
                 <div className="flex flex-col items-center">
-                  <p>Regular price</p>
-                  <span className="text-sm">($ / month</span>
+                  <p>Discounted price</p>
+
+                  {formData.type === "rent" && (
+                    <span className="text-xs">($ / month)</span>
+                  )}
                 </div>
               </div>
-              {formData.offer && (
-                <div className="flex items-center gap-2">
-                  <input
-                    type="number"
-                    id="discountPrice"
-                    min="0"
-                    max="10000000"
-                    required
-                    className="p-3 border border-gray-300 rounded-lg w-28"
-                    onChange={handleChange}
-                    value={formData.discountPrice}
-                  />
-                  <div className="flex flex-col items-center">
-                    <p>Discounted price</p>
-                    <span className="text-sm">($ / month</span>
-                  </div>
-                </div>
-              )}
-            </div>
+            )}
           </div>
         </div>
         <div className="flex flex-col flex-1 gap-4">
@@ -316,9 +318,7 @@ export default function CreateListing() {
           </p>
           <div className="flex gap-4">
             <input
-              onChange={(e) => {
-                setFiles(e.target.files);
-              }}
+              onChange={(e) => setFiles(e.target.files)}
               className="p-3 border border-gray-300 rounded w-full"
               type="file"
               id="images"
@@ -329,7 +329,7 @@ export default function CreateListing() {
               type="button"
               disabled={uploading}
               onClick={handleImageSubmit}
-              className="p-3 text-gree-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80"
+              className="p-3 text-green-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80"
             >
               {uploading ? "Uploading..." : "Upload"}
             </button>
@@ -361,11 +361,9 @@ export default function CreateListing() {
             disabled={loading || uploading}
             className="p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
           >
-            {loading ? "Creating..." : "Create Listing"}
+            {loading ? "Creating..." : "Create listing"}
           </button>
-          {error && (
-            <p className="text-red-700 text-sm  font-semibold">{error}</p>
-          )}
+          {error && <p className="text-red-700 text-sm">{error}</p>}
         </div>
       </form>
     </main>
